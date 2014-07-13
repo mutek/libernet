@@ -1,0 +1,4 @@
+apt-get install batctl bridge-utils sshguard arpon ntp
+batctl -v
+modprobe batman-adv
+
