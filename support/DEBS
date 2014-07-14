@@ -1,4 +1,4 @@
-apt-get install batctl bridge-utils sshguard arpon ntp rfkill iw 
+apt-get install batctl bridge-utils sshguard arpon ntp rfkill iw avahi-dnsconfd avahi-utils avahi-daemon avahi-autoipd openssh-server mdns-scan geoip-bin
 batctl -v
 modprobe batman-adv
 
