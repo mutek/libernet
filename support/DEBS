@@ -1,4 +1,4 @@
-apt-get install batctl bridge-utils sshguard arpon ntp
+apt-get install batctl bridge-utils sshguard arpon ntp rfkill iw 
 batctl -v
 modprobe batman-adv
 
