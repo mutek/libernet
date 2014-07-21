@@ -7,20 +7,32 @@
 # HT40
 # ch 3  - 2422 MHz
 
+[ -z $1 ] && echo "utilizzo: "$0" start|stop|restart" && exit 1
 
-rfkill unblock wifi
-wait
+opzione=$1
+echo "Hai scritto: "$opzione
 
-iw wlan2 set type ibss
-wait
+if [ $opzione = "start" ]
+then
 
-ip link set wlan2 up
-wait
+	echo "Eseguo: "$opzione
 
-iw wlan2 ibss join libernet 2422
-wait
+	rfkill unblock wifi
+	wait
 
-#iw wlan2 ibss leave libernet
+	iw wlan1 set type ibss
+	wait
+
+	ip link set wlan1 up
+	wait
+
+#	iw dev wlan0 set channel 3 HT40+
+
+	iw dev wlan1 ibss join libernet 2422 HT40+
+#	iw wlan1 ibss join libernet
+	wait
+
+#iw wlan1 ibss leave libernet
 
 #segue batman-adv e quindi autoip
 
@@ -31,17 +43,55 @@ wait
     # ifconfig wlan0 up
 
 
-modprobe batman-adv
+	modprobe batman-adv
+	wait
 
-batctl if add wlan2
+	batctl if add wlan1
+	wait
+	# b.a.t.m.a.n. adv cambia il frame
+	ifconfig wlan1 mtu 1527
+	wait
 
-ifconfig wlan2 mtu 1527
+	cat /sys/class/net/wlan1/batman_adv/iface_status
 
-cat /sys/class/net/wlan2/batman_adv/iface_status
+	ifconfig wlan1 0.0.0.0
+	wait
 
-ifconfig wlan2 0.0.0.0
+	ifconfig bat0 up
+	wait
 
-ifconfig bat0 up
+	avahi-autoipd -D -s bat0
+	wait
 
-avahi-autoipd -D -s bat0
+	batctl o
 
+	exit
+
+elif [ $opzione = "stop" ]
+then
+
+	echo "Eseguo: "$opzione
+
+	ifconfig bat0 down
+	wait
+	ifconfig wlan1 down
+	wait	
+	batctl if del wlan1
+	wait
+	iw wlan1 ibss leave
+	wait
+	ip link set wlan1 down
+
+elif [ $opzione = "restart" ]
+then
+
+	echo "Eseguo: "$opzione
+	echo "TO BE IMPLEMENTED"
+	exit
+
+else [ $opzione ]
+
+	echo "utilizzo: "$0" start|stop|restart"
+	exit
+
+fi
