@@ -5,13 +5,14 @@
 # permette di ridurre la tracciabilita su L2 proprio dove lavora batman-adv
 # il sistema è implementabile in quanto batman-adv ad ogni riavvio necessita comunque di un nuovo flood
 # diverso è il caso in cui viene cambiato live producendo problemi di spoofing
+# usarlo solo sul ground router
 
 macchanger -r eth0
 
 # pericoloso attivarlo sulla wlan del bridge trasparente con openwrt: TEST
 # https://forum.openwrt.org/viewtopic.php?id=13186
 # https://forum.openwrt.org/viewtopic.php?id=23183
-
+# FIX risolvere la parte radio di randomizzazione MAC (verificare trelay e mac spoof side effects)
 
 # arpon
 # ------
