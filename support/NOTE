@@ -1,0 +1,27 @@
+# macchanger
+# --------------------
+# cambia MAC address
+# ad esempio ad ogni riavvio di un nodo viene generato un MAC address nuovo
+# permette di ridurre la tracciabilita su L2 proprio dove lavora batman-adv
+# il sistema è implementabile in quanto batman-adv ad ogni riavvio necessita comunque di un nuovo flood
+# diverso è il caso in cui viene cambiato live producendo problemi di spoofing
+
+macchanger -r eth0
+
+# pericoloso attivarlo sulla wlan del bridge trasparente con openwrt: TEST
+# https://forum.openwrt.org/viewtopic.php?id=13186
+# https://forum.openwrt.org/viewtopic.php?id=23183
+
+
+# arpon
+# ------
+# versatile anti ARP poisoning daemon
+ 
+arpon
+
+
+# sshguard
+# ---------
+# Protects from brute force attacks against ssh
+
+sshguard
