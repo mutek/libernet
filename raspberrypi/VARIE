@@ -1,0 +1,84 @@
+classica scrittura immagine
+dd bs=4M if=2014-06-20-wheezy-raspbian.img of=/dev/sdd
+questa immagine parte dal kernel 3.10
+
+#########################
+OTTIMIZZA MOUNT /
+sed -i 's/defaults,noatime/defaults,noatime,nodiratime/g' /etc/fstab
+
+###################################
+RIMUOVI EXTRA TTY
+sed -i '/[2-6]:23:respawn:\/sbin\/getty 38400 tty[2-6]/s%^%#%g' /etc/inittab
+sed -i '/T0:23:respawn:\/sbin\/getty -L ttyAMA0 115200 vt100/s%^%#%g' /etc/inittab
+
+
+####################################
+DROPBEAR vs OPENSSH
+
+apt-get install dropbear openssh-client
+sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-w"/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-s"/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-g"/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-w -s"/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=2222/g' /etc/default/dropbear
+update-rc.d ssh disable
+
+##########################################################
+ZRAM
+
+#!/bin/bash
+### BEGIN INIT INFO
+#Short-Description: Increased Performance In Linux With zRam (Virtual Swap Compressed in RAM)
+#Description: Adapted for Raspian (Rasberry pi) by eXtremeSHOK.com using https://raw.github.com/gionn/etc/master/init.d/zram
+### END INIT INFO
+
+start() {
+    mem_total_kb=$(grep MemTotal /proc/meminfo | grep -E --only-matching '[[:digit:]]+')
+
+    modprobe zram
+
+    sleep 1
+    #only using 50% of system memory, comment the line below to use 100% of system memory
+    mem_total_kb=$((mem_total_kb/2))
+
+    echo $((mem_total_kb * 1024)) > /sys/block/zram0/disksize
+
+    mkswap /dev/zram0
+
+    swapon -p 100 /dev/zram0
+}
+
+stop() {
+    swapoff /dev/zram0
+    sleep 1
+    rmmod zram
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+        sleep 3
+        start
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        RETVAL=1
+esac
+
+-------------
+
+chmod +x /etc/init.d/zram
+update-rc.d zram defaults
+
+-------------
+
+swapon -s
+
+
