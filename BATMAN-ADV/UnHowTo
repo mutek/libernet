@@ -1,0 +1,54 @@
+
+iwconfig wlan0 mode Ad-Hoc
+
+ifconfig wlan0 mtu 1528
+
+iwconfig wlan0 channel [n]
+
+iwconfig wlan0 essid "lamiamesh"
+
+iwconfig wlan0 ap 02:aa:bb:cc:dd:ee
+
+ip link set wlan0 up
+
+modprobe batman-adv
+
+batctl if add wlan0
+
+ip a add 192.168.1.1/24 dev bat0
+
+# per l'accesso ad internet uno dei nodi può agire da gateway:
+
+iptables -t nat -A POSTROUTING -o intefaccia_con_internet -j MASQUERADE
+
+# e sui client
+
+ip r add default via ip_del_gateway dev bat0
+
+#per dare la possibilità ad altri di partecipare alla mesh, senza usare batman e collegandosi alla porta ethernet del pc, si usano i bridge.
+
+brctl addbr mesh-bridge
+brctl addif mesh-bridge eth0
+brctl addif mesh-bridge bat0
+
+
+openwrt
+
+/etc/config/wireless
+
+config wifi-iface 'wmesh'
+       option device 'device fisico'
+       option ifname 'adhoc0'
+       option network 'mesh'
+       option mode 'adhoc'
+       option ssid 'lamiamesh'
+       option bssid '02:aa:bb:cc:dd:ee'
+
+/etc/config/network
+
+config interface 'mesh'
+       option ifname 'adhoc0'
+       option mtu '1528'
+       option proto 'batadv'
+       option mesh 'bat0'
+
