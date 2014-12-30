@@ -1,0 +1,9 @@
+varie riguardo al ground routing con raspberry pi
+
+la versione A ed A+ deve essere testata in quanto dispone di sole 256 MB di RAM e potrebbero essere saturate velocemente a seconda delle tabelle e del rootfs dell'initrd
+
+la versione B con 512MB al momento (dicembre 2014) carica tranquillamente il ramdisk nello zImage di 49MB ed i servizi attivi compreso babeld impongono solo 20 MB di RAM
+
+questa versione puo essere testata accoppiata a radio tp-link 841nd (n300 2,4GHz 2 antenne) configurato con solo 802.11s sia solo link che mesh routing su L2
+
+questo ramo ospita esperimenti per esplorare il piano delle opzioni che implicano: kernel + uClib + initrd (busybox || util-linux) + verticalizzazioni specifiche: mesh router + vlan + packetfilter + ...
