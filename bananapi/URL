@@ -1,0 +1,7 @@
+# genera un ULA IPv6
+
+#wget http://www.kame.net/~suz/gen-ula.sh
+
+# generate IPv6
+
+wget http://www.pps.univ-paris-diderot.fr/~jch/software/files/generate-ipv6-address-0.1.tar.gz

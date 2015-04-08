@@ -1,0 +1,6 @@
+wget https://tools.ietf.org/id/draft-chroboczek-babel-security-considerations-00.txt
+wget http://tools.ietf.org/rfc/rfc7298.txt
+wget https://tools.ietf.org/id/draft-chroboczek-babel-extension-mechanism-04.txt
+wget https://tools.ietf.org/id/draft-chroboczek-babel-diversity-routing-00.txt
+wget http://tools.ietf.org/rfc/rfc6126.txt
+wget https://tools.ietf.org/id/draft-chroboczek-babel-doesnt-care-00.txt
