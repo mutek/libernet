@@ -26,3 +26,13 @@ ratio banana pi vs raspberry pi 2
 al momento la disponibilita di BPI è alta e del RPI2 è zero
 
 in Internet sembra che i benchmarks sono ancora a favore del BPI
+
+BPI ha gigabit ethernet, RPI ha ethernet
+
+BPI ha SATA, RPI no
+
+
+Penalita per tutte le SBC dal costo di circa 40 Euro:
+
+- NON hanno mini PCI express
+- NON hanno USB 3
