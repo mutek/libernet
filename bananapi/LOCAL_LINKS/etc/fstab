@@ -3,4 +3,5 @@
 # 512 MB swapfile
 /swapfile1 swap swap defaults 0 0
 
-/dev/mmcblk0p1  /           ext4    defaults,noatime,nodiratime,data=writeback,commit=600,errors=remount-ro        0       0
+/dev/mmcblk0p2  /           ext4    defaults,noatime,nodiratime,data=writeback,commit=600,errors=remount-ro        0       0
+tmpfs	/var/log	tmpfs	defaults,noatime,mode=0755	0	0
