@@ -28,7 +28,7 @@ git config --global user.name "mutek"
 git config --global user.email mutek@inventati.org
 
 echo "Aggiungo i cambiamenti al database locale"
-git add .
+git add -A .
 #echo "Inserisci una descrizione dei tuoi cambiamenti"
 #read n
 echo "Eseguo la finalizzazione dei cambiamenti in locale"
