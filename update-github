@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #
-# UpdateGithub.sh 2.0
+# update-github v1.0.3
 #
 #
 # Copyleft )C( 2013-2015 Luca Cappelletti <luca.cappelletti@gmail.com>
@@ -20,26 +20,44 @@
 # 0. You just DO WHAT THE FUCK YOU WANT TO.
 #
 
-COMMENT=$1
+[ -z $1 ] && commento=""
 
-[ -z $1 ] && COMMENT=""
-
+# i parametri commentati sono stati inseriti nell'hook git pre-commit
 git config --global user.name "mutek"
 git config --global user.email mutek@inventati.org
 
+commento=$1
+versione=$2
+
+# lista tags
+git tag
+
+# update-github ha senso con un rpeo centralizzato master
+# implica che il sync prima del push è doveroso
+echo "Allineo il repo locale al remoto prima di spingere i cambiemti locali"
+git pull
+wait
+
+# annota tags
 echo "Aggiungo i cambiamenti al database locale"
 git add -A .
-#echo "Inserisci una descrizione dei tuoi cambiamenti"
-#read n
+
 echo "Eseguo la finalizzazione dei cambiamenti in locale"
 EPOCA_UNIX=$(date +%N)
+COMMENTO="["$EPOCA_UNIX"] "$commento
+VERSIONE="v"$versione
 
-CHANGE_LOG=$EPOCA_UNIX" "$COMMENT
-
-echo "Commento transazione: "$CHANGE_LOG
-git commit -a -m "$CHANGE_LOG"
+echo "Commento transazione: "$COMMENTO
+git commit -a -m "$COMMENTO"
+wait
 
 echo "Invio i cambiamenti locali al deposito remoto..."
 git push origin master
-#git push origin gh-pages
+wait
+
+[ -z $2 ] || { echo "Versione: "$VERSIONE; git tag -a $VERSIONE -m "$COMMENTO"; git push origin --tags; git tag; }
+wait
+
+[ -z $2 ] && git tag
+
 echo "ok"

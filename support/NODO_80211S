@@ -1,0 +1,15 @@
+# setup di un nodo 802.11s
+
+if=${1:-wlan0}
+pubip=`ip route get 8.8.8.8 | awk 'NR==1 {print $NF}'`
+last8=`echo $pubip | awk -F . '{print $4}'`
+meship=10.10.1.$last8
+ip link set $if down
+
+ip addr flush $if
+ip link set $if down
+iw dev $if set type mp
+ip link set $if up
+ip addr add $meship/24 dev $if
+iw dev $if set channel 149 HT20
+iw dev $if mesh join foo
