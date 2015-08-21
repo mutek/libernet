@@ -1,0 +1,7 @@
+MESHID="peer2peer"
+IP="10.10.10.10"
+iw dev wlan0 interface add mesh0 type mp mesh_id "$MESHID"
+iw dev mesh0 set channel 1 HT20
+ifconfig wlan0 down
+ifconfig mesh0 up
+ifconfig mesh0 "$IP"
